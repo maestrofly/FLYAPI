@@ -1,0 +1,78 @@
+ we will be building an e-commerce website using HTML, CSS and JavaScript.
+ This website will have several features such as:
+
+fetching products from a server and displaying the results on the page.
+filtering all the products on the page by category and displaying by category.
+Having the ability to add a product to the shopping cart.
+Increase and decrease the quantity of products in the shopping cart.
+Have a “fake” checkout button that shows the total cost of all 
+products and when clicked, empties the cart and displays a checkout message.
+
+
+
+The first thing we need to do when starting a project is to create the necessary files and in this case: index.html, index.js and styles.css.
+
+In the index.html, add the typical boiler plate code along with the css located in the head (I have added google fonts and font awesome icons). I have also added javascript to the body(make sure it is the last thing in the body at all times):
+
+From here we need to build out the Navbar, which is going to contain:
+
+A search bar which will find a product by name
+A select element which will filter all the products by category
+A cart icon which when clicked will open up the cart
+
+At the end we will see the styles for the project, but for right now lets dive into the javaScript we need to get our Navbar functioning. The first thing we need to check is that the javaScript is properly attached to the HTML. I like to console.log a message to make sure it works. We also need to make sure that when the page loads, that the products are displayed on the webpage. For this reason, we will be using DOMContentLoaded event listener in the index.js :
+
+If you inspect the developer tools ( cmd+opt+j ) , you should see the comment this is working . Now that we know the javaScript has been linked properly, we can fetch the data. In this tutorial we will be fetching data from the fakestore api (big shout out to the people behind fakestore!). Lets create a fetchProducts function!:
+
+
+We have added an allProducts variable globally so that we can access the variable anywhere. The data we get back from the API will then be saved to the allProducts variable. allProducts is then console.logged to show the output, which should be an array of 20 products. Before we go and display all the products to the page, we need a place to put them. Let’s go and create a list to house all the products. Place this code just under the Navbar closing tag:
+
+That is a great start but, it would be great to display the data to the screen and for that, we will need to create a displayProducts function in the index.js:
+
+In the displayProducts function, we are accepting the addProducts array as an argument, and mapping through the array and for each product we are inserting html into the list we selected at the top of the function. The fetchProducts function then needs to be altered so that the products apear on the page:
+
+Congratulations we now have products on the screen. Moving along, we can work on the filtering by category logic. Creating the filterCategories function will look like this:
+
+The steps we take for the filterCategories function are as follows:
+
+Find the select element (querySelector)
+Add change event listener on it
+In callback function, get the event
+Based on event, create switch statement and save to variable content
+Filter through content array
+Attach filtered products inside the list in the HTML
+… and then call the function inside the initialise function:
+
+Our products can now be filtered.
+
+Next up is to be able to search a product. The searchProduct function will behave similarly to the filterCategories but have slight changes. Our goal is to:
+
+Add an event listener on the search input (key up)
+clear pre existing products from the products list
+get value from search input
+iterate over products and filter by search value
+display results inside list (inner HTML)
+
+fetchProducts. Tick. FilterCategories. Tick. SearchProducts. Tick.
+
+We can now work on opening/closing the cart. First we need to create the modal structure (place just after ul closing tag):
+
+and all the css for this project, go to the modal section now for the styles:
+
+We now need to be able to add products to the cart, first lets add a cart empty array above the initialise function:
+
+You may have realised that every time we are iterating over the products and displaying each product through innerHTML , we have set up an onclick handler to the button along with the id. It’s this id that we need, to go look in the cart. If its there, we dont add it to the cart, if it is not there we add the product to the cart. Here is the function to do that:
+
+
+In the console you should see the product being added when clicking on a product button. An updater function is now needed that will look at the cart array, iterate over it and display the results along with the ability to increase and decrease quantity or delete it entirely. We will be calling the function shoppingCart:
+
+
+Now call the shoppingCart function at the bottom of the addToCart function:
+
+
+Inside the cart, the products are there but we can not increase or decrease the quantity, lets do that:
+
+
+If we do not want a product, we can remove it by clicking on the red button but first, lets create the function for it:
+
+The last thing now left to do is a checkout button . This is of course just a simple button that will display a message saying “Thank you for your purchase” and clearing the cart of all the items. You can of course add any functionality you like. The checkout function looks like this:
